@@ -9,19 +9,39 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { creatIsueeSchema } from "@/app/validationsSchema";
-import { z } from "zod"
+import { z } from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 type IssueForm = z.infer<typeof creatIsueeSchema>;
 
 const NewIssuePage = () => {
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const router = useRouter();
 
-  const { register, control, handleSubmit, formState: {errors} } = useForm<IssueForm>({
-    resolver: zodResolver(creatIsueeSchema)
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IssueForm>({
+    resolver: zodResolver(creatIsueeSchema),
   });
+
+  const onSubmit = () => {
+    handleSubmit(async (data) => {
+      try {
+        setIsSubmitting(true);
+        await axios.post("/api/issues", data);
+        router.push("/issues");
+      } catch (error) {
+        setError("an unexpected error occurred");
+        setIsSubmitting(false);
+      }
+    });
+  };
 
   return (
     <div className="max-w-xl space-y-3">
@@ -30,16 +50,7 @@ const NewIssuePage = () => {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            await axios.post("/api/issues", data);
-            router.push("/issues");
-          } catch (error) {
-            setError("an unexpected error occurred");
-          }
-        })}
-      >
+      <form onSubmit={onSubmit}>
         <TextField.Root className="mb-5">
           <TextField.Input placeholder="title" {...register("title")} />
         </TextField.Root>
@@ -51,8 +62,10 @@ const NewIssuePage = () => {
             <SimpleMDE placeholder="description" {...field} />
           )}
         />
-        {errors.description && <ErrorMessage>{errors.description?.message}</ErrorMessage>}
-        <Button>Submit new issue</Button>
+        {errors.description && (
+          <ErrorMessage>{errors.description?.message}</ErrorMessage>
+        )}
+        <Button>Submit new issue {isSubmitting && <LoadingSpinner />}</Button>
       </form>
     </div>
   );
