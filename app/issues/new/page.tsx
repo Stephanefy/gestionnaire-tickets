@@ -30,8 +30,7 @@ const NewIssuePage = () => {
     resolver: zodResolver(creatIsueeSchema),
   });
 
-  const onSubmit = () => {
-    handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (data) => {
       try {
         setIsSubmitting(true);
         await axios.post("/api/issues", data);
@@ -41,7 +40,7 @@ const NewIssuePage = () => {
         setIsSubmitting(false);
       }
     });
-  };
+  ;
 
   return (
     <div className="max-w-xl space-y-3">
