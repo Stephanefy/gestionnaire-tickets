@@ -2,7 +2,7 @@ import { Status } from '@prisma/client'
 import { Badge } from '@radix-ui/themes'
 import React from 'react'
 
-const statusMap: Record<Status, { label: string, color: 'red' | 'violet' | 'green'}> = {
+export const statusMap: Record<Status, { label: string, color: 'red' | 'violet' | 'green'}> = {
     "OPEN" : { label: "open", color: "green"},
     "IN_PROGRESS" : { label: "in progress", color: "violet"},
     "CLOSED" : { label: "closed", color: "red"},

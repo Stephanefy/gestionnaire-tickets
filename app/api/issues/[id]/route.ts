@@ -11,6 +11,8 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
     const validation = issueSchema.safeParse(body)
 
+    console.log("body",body)
+
     if (!validation.success) {
         return NextResponse.json(validation.error.format(), {status: 400})
     }
@@ -29,7 +31,8 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
         where: {id: issue.id},
         data: {
             title: body.title,
-            description: body.description
+            description: body.description,
+            status: body.status
         }
     })
 
