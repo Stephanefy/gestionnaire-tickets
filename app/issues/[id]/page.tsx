@@ -1,38 +1,38 @@
-import prisma from '@/prisma/client'
-import { Box, Grid } from '@radix-ui/themes'
-import { notFound } from 'next/navigation'
-import EditButtonIssue from './EditButtonIssue'
-import IssueDetails from './IssueDetails'
+import prisma from "@/prisma/client";
+import { Box, Grid, Flex } from "@radix-ui/themes";
+import { notFound } from "next/navigation";
+import EditButtonIssue from "./edit/components/EditButtonIssue";
+import DeleteButtonIssue from "./edit/components/DeleteButtonIssue";
+import IssueDetails from "./IssueDetails";
 
 interface Props {
-    params: { id: string}
+  params: { id: string };
 }
-
 
 const IssueDetailPage = async ({ params }: Props) => {
-
   const issue = await prisma.issue.findUnique({
     where: {
-        id: parseInt(params.id)
-    }
-  })
+      id: parseInt(params.id),
+    },
+  });
 
   if (!issue) {
-    notFound()
+    notFound();
   }
 
-
-
   return (
-    <Grid columns={{initial: "1", md: "2"}} gap="5">
-        <Box>
-            <IssueDetails issue={issue}/>
-        </Box>
-        <Box>
-            <EditButtonIssue issueId={issue.id}/>
-        </Box>
+    <Grid columns={{ initial: "1", sm: "5" }} gap="4">
+      <Box className="md:col-span-4">
+        <IssueDetails issue={issue} />
+      </Box>
+      <Box>
+        <Flex height="2" direction={"column"} gap="4">
+          <EditButtonIssue issueId={issue.id}/>
+          <DeleteButtonIssue issueId={issue.id} />
+        </Flex>
+      </Box> 
     </Grid>
-  )
-}
+  );
+};
 
-export default IssueDetailPage
+export default IssueDetailPage;
