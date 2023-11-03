@@ -15,7 +15,7 @@ const DeleteButtonIssue = ({ issueId }: { issueId: number }) => {
   const deleteIssue = async () => {
     try {
       setIsDeleting(true)
-      await axios.delete("/api/issues/" + issueId);
+      await axios.delete("/api/issues/list" + issueId);
       router.push("/issues");
       router.refresh();
     } catch (error) {
@@ -28,9 +28,10 @@ const DeleteButtonIssue = ({ issueId }: { issueId: number }) => {
     <>
       <AlertDialog.Root>
         <AlertDialog.Trigger>
-          <Button color="red" className="cursor-pointer">
+          <Button disabled={isDeleting} color="red" className="cursor-pointer">
             <CrossCircledIcon />
             Supprimer ce ticket
+            {isDeleting && <LoadingSpinner/>}
           </Button>
         </AlertDialog.Trigger>
         <AlertDialog.Content>
@@ -46,10 +47,8 @@ const DeleteButtonIssue = ({ issueId }: { issueId: number }) => {
               </Button>
             </AlertDialog.Cancel>
             <AlertDialog.Action>
-              <Button disabled={isDeleting} variant="solid" color="red" onClick={deleteIssue}>
+              <Button variant="solid" color="red" onClick={deleteIssue}>
                 Supprimer ce ticket
-                {isDeleting && <LoadingSpinner/>}
-
               </Button>
             </AlertDialog.Action>
           </Flex>
