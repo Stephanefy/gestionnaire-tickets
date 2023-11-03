@@ -137,7 +137,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         {errors.description && (
           <ErrorMessage>{errors.description?.message}</ErrorMessage>
         )}
-        <Button>{issue ? "Éditer le ticket" : "Soumettre un nouveau ticket"} {isSubmitting && <LoadingSpinner />}</Button>
+        <Button disabled={isSubmitting}>{issue ? "Éditer le ticket" : "Soumettre un nouveau ticket"} {isSubmitting && <LoadingSpinner />}</Button>
       </form>
     </div>
   );

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { issueSchema } from "@/app/validationsSchema";
 import prisma from "@/prisma/client";
-
+import delay from "delay";
 
 
 
@@ -48,7 +48,8 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
             id: parseInt(params.id)
         }
     })
-    console.log(issue)
+    
+    await delay(2000)
 
     if (!issue) {
         return NextResponse.json({error: "Invalid issue"}, {status: 400})
