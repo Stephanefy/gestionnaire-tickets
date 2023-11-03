@@ -1,38 +1,69 @@
-'use client'
+"use client";
 
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const DeleteButtonIssue = ({ issueId }: { issueId: number }) => {
-  return (
-    <AlertDialog.Root >
-      <AlertDialog.Trigger>
-        <Button color="red" className="cursor-pointer">
-          <CrossCircledIcon />
-          Supprimer ce ticket
-        </Button>
-      </AlertDialog.Trigger>
-      <AlertDialog.Content>
-        <AlertDialog.Title>Supprimer ce ticket</AlertDialog.Title>
-        <AlertDialog.Description size="2">
-          Êtes-vous sûr de vouloir supprimer ce ticket
-        </AlertDialog.Description>
+  const router = useRouter();
+  const [error, setError] = useState(false);
 
-        <Flex gap="3" mt="4" justify="end">
+  const deleteIssue = async () => {
+    try {
+      await axios.delete("/api/issues/" + issueId);
+      router.push("/issues");
+      router.refresh();
+    } catch (error) {
+      setError(true);
+    }
+  };
+
+  return (
+    <>
+      <AlertDialog.Root>
+        <AlertDialog.Trigger>
+          <Button color="red" className="cursor-pointer">
+            <CrossCircledIcon />
+            Supprimer ce ticket
+          </Button>
+        </AlertDialog.Trigger>
+        <AlertDialog.Content>
+          <AlertDialog.Title>Supprimer ce ticket</AlertDialog.Title>
+          <AlertDialog.Description size="2">
+            Êtes-vous sûr de vouloir supprimer ce ticket
+          </AlertDialog.Description>
+
+          <Flex gap="3" mt="4" justify="end">
+            <AlertDialog.Cancel>
+              <Button variant="soft" color="gray">
+                Annuler
+              </Button>
+            </AlertDialog.Cancel>
+            <AlertDialog.Action>
+              <Button variant="solid" color="red" onClick={deleteIssue}>
+                Supprimer ce ticket
+              </Button>
+            </AlertDialog.Action>
+          </Flex>
+        </AlertDialog.Content>
+      </AlertDialog.Root>
+
+      <AlertDialog.Root open={error}>
+        <AlertDialog.Content>
+          <AlertDialog.Title>Erreur</AlertDialog.Title>
+          <AlertDialog.Description>
+            Une erreur s&apos;est prodtuite lors de la suppresion de ce ticket
+          </AlertDialog.Description>
           <AlertDialog.Cancel>
-            <Button variant="soft" color="gray">
-              Annuler
+            <Button variant="soft" color="gray" onClick={() => setError(false)}>
+              Ok
             </Button>
           </AlertDialog.Cancel>
-          <AlertDialog.Action>
-            <Button variant="solid" color="red">
-              Supprimer ce ticket
-            </Button>
-          </AlertDialog.Action>
-        </Flex>
-      </AlertDialog.Content>
-    </AlertDialog.Root>
+        </AlertDialog.Content>
+      </AlertDialog.Root>
+    </>
   );
 };
 

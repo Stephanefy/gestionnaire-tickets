@@ -48,12 +48,13 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
             id: parseInt(params.id)
         }
     })
+    console.log(issue)
 
     if (!issue) {
         return NextResponse.json({error: "Invalid issue"}, {status: 400})
     }
 
-    prisma.issue.delete({
+    await prisma.issue.delete({
         where: {
             id: issue.id
         }
