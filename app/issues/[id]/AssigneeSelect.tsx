@@ -1,11 +1,10 @@
 "use client";
 
+import { Skeleton } from "@/app/components";
 import { Issue, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { Skeleton } from "@/app/components";
 import toast, { Toaster } from 'react-hot-toast';
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
@@ -13,12 +12,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     data: users,
     error,
     isLoading,
-  } = useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: () => axios.get("/api/users").then((res) => res.data),
-    staleTime: 60 * 1000, //60s
-    retry: 3,
-  });
+  } = useUsers();
 
   // useEffect(() => {
   //     const fetchUsers = async () => {
@@ -32,18 +26,20 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
 
   if (error) return null;
 
+  const assignIssue = (userId: string) => {
+    axios.patch("/api/issues/" + issue.id, {
+    assignedToUserId: userId === "unassigned" ? null : userId
+    }).catch(() => {
+        toast.error("le changement n'a pu être sauvegardé")
+    });
+    toast.success("changement effectué avec succès")
+}
+
   return (
     <>
         <Select.Root
         defaultValue={issue.assignedToUserId || ""}
-        onValueChange={(userId) => {
-            axios.patch("/api/issues/" + issue.id, {
-            assignedToUserId: userId === "unassigned" ? null : userId
-            }).catch(() => {
-                toast.error("le changement n'a pu être sauvegardé")
-            });
-            toast.success("changement effectué avec succès")
-        }} 
+        onValueChange={assignIssue} 
         >
         <Select.Trigger placeholder="Assign..." />
         <Select.Content>
@@ -62,5 +58,12 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     </>
   );
 };
+
+const useUsers = () => useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: () => axios.get("/api/users").then((res) => res.data),
+    staleTime: 60 * 1000, //60s
+    retry: 3,
+  });
 
 export default AssigneeSelect;
