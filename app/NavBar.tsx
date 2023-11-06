@@ -10,13 +10,7 @@ import { Avatar, Box, DropdownMenu, Flex, Text } from "@radix-ui/themes";
 import { Container } from "@radix-ui/themes";
 
 const NavBar = () => {
-  const currentPath = usePathname();
-  const { status, data: session } = useSession();
 
-  const links = [
-    { label: "Dashboard", href: "/" },
-    { label: "Issues", href: "/issues/list" },
-  ];
 
   return (
     <nav className="border mb-5 px-5 h-14 py-3">
@@ -26,15 +20,32 @@ const NavBar = () => {
             <Link href="/">
               <AiFillBug />
             </Link>
+            <NavLinks/>
+          </Flex>
+          <AuthStatus/>
+        </Flex>
+      </Container>
+    </nav>
+  );
+};
 
-            <ul className="flex space-x-6">
+
+const NavLinks = () => {
+
+  const currentPath = usePathname();
+
+  const links = [
+    { label: "Dashboard", href: "/" },
+    { label: "Issues", href: "/issues/list" },
+  ];
+  return (
+    <ul className="flex space-x-6">
               {links.map((link) => (
                 <li key={link.label}>
                   <Link
                     className={classNames({
-                      "text-zinc-900": link.href === currentPath,
-                      "text-zinc-500": link.href !== currentPath,
-                      "hover:text-zinc-800 transition-colors": true,
+                      "nav-link": true,
+                      "!text-zinc-900": link.href === currentPath,
                     })}
                     href={link.href}
                   >
@@ -43,8 +54,22 @@ const NavBar = () => {
                 </li>
               ))}
             </ul>
-          </Flex>
-          <Box>
+  )
+}
+
+
+
+const AuthStatus = () => {
+
+  const { status, data: session } = useSession();
+
+  if (status === "loading") return null;
+
+  if (status === "unauthenticated") return  <Link className="nav-link" href="/api/auth/signin">Se connecter</Link>
+
+
+  return (
+    <Box>
             {status === "authenticated" && (
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger>
@@ -54,6 +79,7 @@ const NavBar = () => {
                     size="2"
                     radius="full"
                     className="cursor-pointer"
+                    referrerPolicy="no-referrer"
                   />
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content>
@@ -66,14 +92,8 @@ const NavBar = () => {
                 </DropdownMenu.Content>
               </DropdownMenu.Root>
             )}
-            {status === "unauthenticated" && (
-              <Link href="/api/auth/signin">Se connecter</Link>
-            )}
           </Box>
-        </Flex>
-      </Container>
-    </nav>
-  );
-};
+  )
+}
 
 export default NavBar;
