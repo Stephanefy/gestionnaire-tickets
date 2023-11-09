@@ -3,9 +3,9 @@ import { Badge } from '@radix-ui/themes'
 import React from 'react'
 
 export const statusMap: Record<Status, { label: string, color: 'red' | 'violet' | 'green'}> = {
-    "OPEN" : { label: "open", color: "green"},
-    "IN_PROGRESS" : { label: "in progress", color: "violet"},
-    "CLOSED" : { label: "closed", color: "red"},
+    "OPEN" : { label: "ouvert", color: "green"},
+    "IN_PROGRESS" : { label: "en cours", color: "violet"},
+    "CLOSED" : { label: "terminé", color: "red"},
 }
  
 const IssueStatusBadge = ({ status } : { status: Status}) => {

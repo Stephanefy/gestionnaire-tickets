@@ -86,7 +86,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
             <>
               <IssueStatusBadge status={issueStatus ? issueStatus : issue?.status} />
               <Box display="inline" ml="auto" className="space-x-2">
-                <label htmlFor="open">open</label>
+                <label htmlFor="open">Ouvert</label>
                 <input
                   id="open"
                   {...register("status")}
@@ -94,7 +94,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
                   value="OPEN"
                   onChange={(e) => setIssueStatus(Status.OPEN)  }
                 />
-                <label htmlFor="in_progress">in progress</label>
+                <label htmlFor="in_progress">En cours</label>
 
                 <input
                   className=""
@@ -105,7 +105,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
                   onChange={(e) => setIssueStatus(Status.IN_PROGRESS)  }
 
                 />
-                <label htmlFor="closed">closed</label>
+                <label htmlFor="closed">Terminé</label>
 
                 <input
                   id="closed"
