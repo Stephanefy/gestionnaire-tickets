@@ -11,9 +11,9 @@ const SelectStatus = forwardRef<Ref, {issue: Issue, onValueChange: (...event: an
     <Select.Root  defaultValue={props.issue?.status}>
     <Select.Trigger ref={ref}/>
     <Select.Content position="popper">
-      <Select.Item value="OPEN">Open</Select.Item>
-      <Select.Item value="IN_PROGRESS">In progress</Select.Item>
-      <Select.Item value="CLOSED">Closed</Select.Item>
+      <Select.Item value="OPEN">Ouvert</Select.Item>
+      <Select.Item value="IN_PROGRESS">En cours</Select.Item>
+      <Select.Item value="CLOSED">Terminé</Select.Item>
     </Select.Content>
   </Select.Root>
   )
