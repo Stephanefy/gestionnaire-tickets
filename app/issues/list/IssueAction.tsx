@@ -7,7 +7,7 @@ const IssueAction = () => {
   return (
     <Flex justify="between">
         <IssueStatusFilter/>
-        <Button className='mb-5'><Link href="/issues/new">Add new issue</Link></Button>
+        <Button className='mb-5'><Link href="/issues/new">Ajouter un ticket</Link></Button>
     </Flex>
   )
 }
