@@ -3,6 +3,7 @@ import IssueSummary from "./IssueSummary";
 import prisma from "@/prisma/client";
 import IssueCharts from "./IssueCharts";
 import { Flex, Grid } from "@radix-ui/themes";
+ import { Metadata } from "next";
 
 export default async function Home() {
   const open = await prisma.issue.count({ where: { status: "OPEN" } });
@@ -32,4 +33,10 @@ export default async function Home() {
       <LatestIssues />
     </Grid>
   );
+}
+
+
+export const metadata: Metadata = {
+  title: "Gestionnaire de Ticket - Tableau de bord",
+  description: "Gérez les tickets des problèmes techniques survenus dans l'application"
 }
