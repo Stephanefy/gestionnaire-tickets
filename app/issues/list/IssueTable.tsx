@@ -71,14 +71,14 @@ const columns: {
   className?: string;
   orderByDirection?: string;
 }[] = [
-  { label: "Issue", value: "title", orderByDirection: "asc" },
+  { label: "Tikcket", value: "title", orderByDirection: "asc" },
   {
-    label: "Status",
+    label: "Statut",
     value: "status",
     className: "hidden md:table-cell",
     orderByDirection: "asc",
   },
-  { label: "Created", value: "createdAt", orderByDirection: "asc" },
+  { label: "Créé le", value: "createdAt", orderByDirection: "asc" },
 ];
 
 export const columnNames = columns.map((column) => column.value);
