@@ -16,6 +16,7 @@ const IssueCharts = ({open, inProgress, closed}: Props) => {
     { label: 'Closed', value: closed},
   ]
 
+
   return (
     <Card>
         <ResponsiveContainer 

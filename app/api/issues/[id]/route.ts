@@ -35,6 +35,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
         if (!user) 
             return NextResponse.json({error: "Invalid user"}, {status: 400})
     }
+    console.log("id ",params.id)
 
     const issue = await prisma.issue.findUnique({
         where: {
@@ -67,6 +68,8 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     const session = await getServerSession(authOptions)
 
     if (!session) return NextResponse.json({}, {status: 401})
+
+    console.log("id", params.id);
 
     const issue = await prisma.issue.findUnique({
         where: {

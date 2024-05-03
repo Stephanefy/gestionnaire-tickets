@@ -17,7 +17,7 @@ export default async function Home() {
     inProgress,
     closed,
   };
-
+  
   return (
     <Grid
       columns={{
